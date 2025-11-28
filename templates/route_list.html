@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block title %}Flight Routes - Flight Routes System{% endblock %}
+
+{% block page_title %}Flight Routes Management{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="table-container">
+            <!-- Messages Display -->
+            {% include 'includes/messages.html' %}
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="chart-title">All Flight Routes</h3>
+                <a href="{% url 'route_create' %}" class="btn btn-primary">
+                    <i class="fas fa-plus-circle me-2"></i>Add New Route
+                </a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Route</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Position</th>
+                            <th>Duration</th>
+                            <th>Created</th>
+                            <th>Updated</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for route in routes %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="route-icon me-3">
+                                        <i class="fas fa-route text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <strong>Route #{{ route.id }}</strong>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="airport-icon me-2">
+                                        <i class="fas fa-plane-departure text-success"></i>
+                                    </div>
+                                    <div>
+                                        <span class="fw-semibold">{{ route.from_airport.code }}</span>
+                                        <br>
+                                        <small class="text-muted">{{ route.from_airport.name }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="airport-icon me-2">
+                                        <i class="fas fa-plane-arrival text-info"></i>
+                                    </div>
+                                    <div>
+                                        <span class="fw-semibold">{{ route.to_airport.code }}</span>
+                                        <br>
+                                        <small class="text-muted">{{ route.to_airport.name }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary fs-6">#{{ route.position }}</span>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-clock text-warning me-2"></i>
+                                    <span class="fw-semibold">{{ route.duration }} min</span>
+                                </div>
+                            </td>
+                            <td>
+                                <small class="text-muted">{{ route.created_at|date:"M d, Y" }}</small>
+                            </td>
+                            <td>
+                                <small class="text-muted">{{ route.updated_at|date:"M d, Y" }}</small>
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{% url 'route_update' route.pk %}" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-edit me-1"></i>Edit
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center py-4">
+                                <div class="empty-state">
+                                    <i class="fas fa-route fa-3x text-muted mb-3"></i>
+                                    <h5 class="text-muted">No Flight Routes Found</h5>
+                                    <p class="text-muted mb-3">Get started by creating your first flight route.</p>
+                                    <a href="{% url 'route_create' %}" class="btn btn-primary">
+                                        <i class="fas fa-plus-circle me-2"></i>Create First Route
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .empty-state {
+        padding: 2rem;
+        text-align: center;
+    }
+    
+    .route-icon {
+        width: 40px;
+        height: 40px;
+        background: rgba(67, 97, 238, 0.1);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .airport-icon {
+        width: 32px;
+        height: 32px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .table th {
+        font-weight: 600;
+        color: #495057;
+        border-bottom: 2px solid #e9ecef;
+    }
+    
+    .btn-group .btn {
+        border-radius: 6px;
+        margin: 0 2px;
+    }
+    
+    .route-icon .fas {
+        color: #4361ee;
+    }
+</style>
+{% endblock %}
